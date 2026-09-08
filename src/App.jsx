@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRef } from "react";
 
 
 function App() {
@@ -9,7 +10,11 @@ function App() {
 
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  const fileInputRef = useRef(null);
+
+  //Upload image functionality
   function handleImageChange(event) {
 
     const selectedFile = event.target.files[0];
@@ -19,15 +24,22 @@ function App() {
     setPreview(
       URL.createObjectURL(selectedFile)
     );
+
+    // clear previous error
+    setError(null);
   }
 
 
   //Function to handle image prediction
   async function predictImage() {
 
+    //Clear old errors.
+    setError(null);
+
     //Predict button won't work if image is not selected
     if (!image) {
-      alert("Please select an image");
+      // alert("Please select an image"); //This is a browser pop up error
+      setError("Please select an image first");
       return;
     }
 
@@ -50,17 +62,31 @@ function App() {
         }
       );
 
+      if(!response.ok){
+        const errorData = await response.json();
+        throw new Error(errorData.detail);
+      }
+
       const data = await response.json();
       setResult(data);
     } 
     catch(error) {
-      console.error(error);
+      setError(error.message);
     }
     finally {
       setLoading(false);
     }
   }
 
+  function reset(){
+    setImage(null);
+    setPreview(null);
+    setResult(null);
+    setError(null);
+
+    //clear file name after reset
+    fileInputRef.current.value = "";
+  }
 
   return (
     <div>
@@ -71,6 +97,8 @@ function App() {
 
 
       <input
+        ref={fileInputRef}
+        id="fileUpload"
         type="file"
         accept="image/*"
         onChange={handleImageChange}
@@ -98,6 +126,18 @@ function App() {
       <button onClick={predictImage}>
         Predict
       </button>
+
+      <button onClick={reset}>
+        Reset
+      </button>
+
+      {
+        error && (
+          <p>
+            {error}
+          </p>
+        )
+      }
 
       {
         loading && (
