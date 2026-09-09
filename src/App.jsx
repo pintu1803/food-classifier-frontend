@@ -111,19 +111,12 @@ function App() {
         formData
       );
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        throw new Error(errorData?.detail || "The classifier couldn't process that photo.");
-      }
+      setResult(response.data);
 
-      const data = await response.json();
-      setResult(data);
       setSampleCount((count) => count + 1);
     } catch (err) {
-      const message =
-        err instanceof TypeError
-          ? "Can't reach the classifier service. Check that it's running and try again."
-          : err.message;
+      console.log(err);
+      const message = err.response?.data?.detail || "The classifier couldn't process that photo.";
       setError(message);
     } finally {
       setLoading(false);
