@@ -1,8 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { FaGithub, FaLinkedin, FaGlobe, FaTwitter } from "react-icons/fa";
 import "./App.css";
+import axios from "axios";
 
-const API_URL = "http://localhost:8000/predict";
+//=========================================================
+//Local testing
+// const API_URL = "http://localhost:8000/predict";
+
+//Deployed Link
+const API_URL = `${import.meta.env.VITE_API_URL}/predict`;
+//=========================================================
+
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_SIZE_BYTES = 5 * 1024 * 1024;
 const name_of_company = "Pintu Saini"
@@ -98,10 +106,10 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await fetch(API_URL, {
-        method: "POST",
-        body: formData,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/predict`,
+        formData
+      );
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
