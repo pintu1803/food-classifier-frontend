@@ -116,7 +116,7 @@ function App() {
       setSampleCount((count) => count + 1);
     } catch (err) {
       console.log(err);
-      const message = err.response?.data?.detail || "Sorry! Our Backend Servers are under management.";
+      const message = err.response?.data?.detail || "Sorry! Our Backend Servers are under Maintainance.";
       setError(message);
     } finally {
       setLoading(false);
