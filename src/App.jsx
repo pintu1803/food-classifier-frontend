@@ -17,20 +17,20 @@ const name_of_company = "Pintu Saini"
 
 const supportedDishes = [
   "Biryani",
-  "Burger",
-  "Butter Chicken",
-  "Chai",
-  "Chapati / Roti",
+  "Chole Bhature",
+  "Dabeli",
   "Dal",
   "Dhokla",
-  "Gulab Jamun",
-  "Idli",
+  "Dosa",
   "Jalebi",
-  "Kathi Roll",
-  "Masala Dosa",
+  "Kathi-Roll",
+  "Kofta",
   "Naan",
-  "Paneer Tikka",
-  "Samosa"
+  "Pakora",
+  "Paneer",
+  "Panipuri",
+  "Pav-Bhaji",
+  "VadaPav"
 ];
 
 function App() {
