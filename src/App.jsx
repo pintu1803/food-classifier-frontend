@@ -116,7 +116,7 @@ function App() {
       setSampleCount((count) => count + 1);
     } catch (err) {
       console.log(err);
-      const message = err.response?.data?.detail || "The classifier couldn't process that photo.";
+      const message = err.response?.data?.detail || "Sorry! Our Backend Servers are under management.";
       setError(message);
     } finally {
       setLoading(false);
