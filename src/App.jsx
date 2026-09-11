@@ -272,7 +272,15 @@ function App() {
 
             {loading && (
               <div className="result-panel__loading">
-                <p className="result-panel__loading-label">Reading the photo…</p>
+                <p className="result-panel__loading-label">
+                  Analyzing your food photo…
+                </p>
+
+                <p className="result-panel__loading-hint">
+                  The first prediction may take a little longer while the AI model warms up.
+                  Future predictions will be faster.
+                </p>
+
                 <div className="skeleton skeleton--title" />
                 <div className="skeleton skeleton--bar" />
                 <div className="skeleton skeleton--line" />
