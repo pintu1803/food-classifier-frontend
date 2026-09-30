@@ -52,6 +52,14 @@ function App() {
     };
   }, [preview]);
 
+  // close the dishes modal with Escape
+  useEffect(() => {
+    if (!showDishes) return;
+    const onKey = (e) => e.key === "Escape" && setShowDishes(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [showDishes]);
+
   function handleFile(file) {
     setError(null);
     setResult(null);
@@ -137,7 +145,6 @@ function App() {
     <div className="page">
       <div className="page__inner">
 
-
         <header className="masthead">
           <h1>Indian Food Classifier</h1>
           <p>
@@ -205,6 +212,7 @@ function App() {
                 Reset
               </button>
               <button
+                type="button"
                 className="btn btn--primary"
                 onClick={() => setShowDishes(true)}
               >
@@ -218,44 +226,6 @@ function App() {
               </p>
             )}
           </section>
-
-          
-        {showDishes && (
-          <div className="dish-modal">
-            <div className="dish-card">
-              <h2>
-                Supported Dishes
-              </h2>
-
-              <p className="dish-subtitle">
-                Our model can identify these 15 dishes
-              </p>
-            <div className="dish-grid">
-
-            {supportedDishes.map((dish, index) => (
-
-              <div 
-                className="dish-item"
-                key={index}
-              >
-              <span className="dish-number">
-                {dish}
-              </span>
-
-              </div>
-          ))}
-
-          </div>
-              <button
-                className="glass-button close-button"
-                onClick={() => setShowDishes(false)}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-          )}
-
 
           <section
             className={"result-panel" + (result ? " result-panel--filled" : "")}
@@ -331,21 +301,21 @@ function App() {
             )}
           </section>
         </main>
-      
-        <footer className="mt-16 border-t pt-6 text-center text-gray-500">
-          <p className="font-semibold text-green-700">
+
+        <footer className="footer">
+          <p className="footer__built">
             Built with ❤️ using React, FastAPI and PyTorch
           </p>
 
-          <p className="mt-2 text-black-700"> © 2026 {name_of_company} </p>
+          <p className="footer__copy"> © 2026 {name_of_company} </p>
 
-          <div className="flex justify-center gap-4 mt-4">
+          <div className="footer__links">
             <a
               href="https://github.com/pintu1803"
               target="_blank"
               rel="noopener noreferrer"
               className="glass-button">
-              <FaGithub />  
+              <FaGithub />
               GitHub
             </a>
 
@@ -353,7 +323,7 @@ function App() {
               href="https://linkedin.com/in/pinsaini-in"
               target="_blank"
               rel="noopener noreferrer"
-              className="glass-button"> 
+              className="glass-button">
               <FaLinkedin />
               LinkedIn
             </a>
@@ -367,26 +337,55 @@ function App() {
               Twitter
             </a>
 
-
             <a
               href="https://pintusaini.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
-             className="glass-button">
+              className="glass-button">
               <FaGlobe />
               Portfolio
             </a>
           </div>
-
         </footer>
 
       </div>
 
+      {/* Modal lives outside the grid so it never affects layout */}
+      {showDishes && (
+        <div
+          className="dish-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="dish-title"
+          onClick={(e) => e.target === e.currentTarget && setShowDishes(false)}
+        >
+          <div className="dish-card">
+            <h2 id="dish-title">Supported Dishes</h2>
+
+            <p className="dish-subtitle">
+              Our model can identify these {supportedDishes.length} dishes
+            </p>
+
+            <div className="dish-grid">
+              {supportedDishes.map((dish) => (
+                <div className="dish-item" key={dish}>
+                  <span className="dish-number">{dish}</span>
+                </div>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              className="glass-button close-button"
+              onClick={() => setShowDishes(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 export default App;
-
-
-
